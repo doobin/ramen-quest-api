@@ -36,7 +36,9 @@ router.get('/venues', requireToken, (req, res) => {
       // `venues` will be an array of Mongoose documents
       // we want to convert each one to a POJO, so we use `.map` to
       // apply `.toObject` to each one
-      return venues.map(venue => venue.toObject()).reverse()
+      return venues.map(venue => venue.toObject()).filter(venue => {
+        return venue.user.toString() === req.user._id.toString()
+      })
     })
     // respond with status 200 and JSON of the venues
     .then(venues => res.status(200).json({ venues: venues }))
@@ -60,11 +62,13 @@ router.get('/venues/:id', requireToken, (req, res) => {
 // POST /venues
 router.post('/venues', requireToken, (req, res) => {
   // set owner of new venue to be current user
-  req.body.venue.owner = req.user.id
+  console.log(req.user.id)
+  req.body.venue.user = req.user.id
 
   Venue.create(req.body.venue)
     // respond to succesful `create` with status 201 and JSON of new "venue"
     .then(venue => {
+      console.log(venue)
       res.status(201).json({ venue: venue.toObject() })
     })
     // if an error occurs, pass it off to our error handler
@@ -111,7 +115,7 @@ router.delete('/venues/:id', requireToken, (req, res) => {
     .then(handle404)
     .then(venue => {
       // throw an error if current user doesn't own `venue`
-      requireOwnership(req, venue)
+      // requireOwnership(req, venue)
       // delete the venue ONLY IF the above didn't throw
       venue.remove()
     })

@@ -6,13 +6,11 @@ const venueSchema = new mongoose.Schema({
     required: true
   },
   rating: {
-    type: String,
-    required: true
+    type: String
   },
-  owner: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    ref: 'User'
   }
 }, {
   timestamps: true
