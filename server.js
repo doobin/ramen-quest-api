@@ -6,6 +6,7 @@ const cors = require('cors')
 
 // require route files
 const exampleRoutes = require('./app/routes/example_routes')
+const venueRoutes = require('./app/routes/venue_routes')
 const userRoutes = require('./app/routes/user_routes')
 
 // require database configuration logic
@@ -70,6 +71,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 // register route files
 app.use(exampleRoutes)
+app.use(venueRoutes)
 app.use(userRoutes)
 
 // run API on designated port (4741 in this case)
