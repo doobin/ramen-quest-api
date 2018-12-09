@@ -62,13 +62,11 @@ router.get('/venues/:id', requireToken, (req, res) => {
 // POST /venues
 router.post('/venues', requireToken, (req, res) => {
   // set owner of new venue to be current user
-  console.log(req.user.id)
   req.body.venue.user = req.user.id
 
   Venue.create(req.body.venue)
     // respond to succesful `create` with status 201 and JSON of new "venue"
     .then(venue => {
-      console.log(venue)
       res.status(201).json({ venue: venue.toObject() })
     })
     // if an error occurs, pass it off to our error handler
